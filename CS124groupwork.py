@@ -12,43 +12,45 @@ class NumList:
     
     def add(self, other):
         if self.sign and other.sign:
-            self.num = addList(self.num, other.num)
+            sum = addList(self.num, other.num)
         elif self.sign == False and other.sign == False:
-            self.num = addList(self.num, other.num)
+            sum = addList(self.num, other.num)
         elif self.sign == False and other.sign == True:
             if compare(self.num, other.num):
                 self.sign = False
-                self.num = subList(self.num, other.num)
+                sum = subList(self.num, other.num)
             else:
                 self.sign = True
-                self.num = subList(other.num, self.num)
+                sum = subList(other.num, self.num)
         elif self.sign == True and other.sign == False:
             if compare(self.num, other.num):
                 self.sign = True
-                self.num = subList(self.num, other.num)
+                sum = subList(self.num, other.num)
             else:
                 self.sign = False
-                self.num = subList(other.num - self.num)
+                sum = subList(other.num - self.num)
+        return sum
                     
     def sub(self, other):
         if self.sign and other.sign:
             if compare(self.num, other.num):
                 self.sign = True
-                self.num = subList(self.num, other.num)
+                mina = subList(self.num, other.num)
             else:
                 self.sign = False
-                self.num = subList(other.num, self.num)
+                mina = subList(other.num, self.num)
         elif self.sign == False and other.sign == False:
             if compare(self.num, other.num):
                 self.sign = False
-                self.num = subList(self.num, other.num)
+                mina = subList(self.num, other.num)
             else:
                 self.sign = True
-                self.num = subList(other.num, self.num)
+                mina = subList(other.num, self.num)
         elif self.sign == False and other.sign == True:
-            self.num = addList(self.num, other.num)
+            mina = addList(self.num, other.num)
         elif self.sign == True and other.sign == False:
-            self.num = addList(self.num, other.num)
+            mina = addList(self.num, other.num)
+        return mina
 
     def mul(self, other):
         pass
@@ -61,34 +63,22 @@ class NumList:
 
 def addList(a, b): # adds two positive numlists
     result = []
-    carryFlag = False
+    carryFlag = 0
     for i in range(min(len(a), len(b))):
-        newDigit = a[i] + b[i] + carryFlag
-        if newDigit >= 10:
-            newDigit = newDigit - 10
-            carryFlag = True
-        else:
-            carryFlag = False
+        newDigit = (a[i] + b[i] + carryFlag)%10
+        carryFlag = (a[i] + b[i] + carryFlag)-newDigit
         result.append(newDigit)
     if len(a) > len(b):
         for i in range(len(b), len(a)):
-            newDigit = a[i] + carryFlag
-            if newDigit >= 10:
-                newDigit = newDigit - 10
-                carryFlag = True
-            else:
-                carryFlag = False
-            result.append(newDigit)
+            newDigit = (a[i] + carryFlag)%10
+            carryFlag = (a[i] + carryFlag)-newDigit
+        result.append(newDigit)
     elif len(b) > len(a):
         for i in range(len(a), len(b)):
-            newDigit = b[i] + carryFlag
-            if newDigit >= 10:
-                newDigit = newDigit - 10
-                carryFlag = True
-            else:
-                carryFlag = False
-            result.append(newDigit)
-    if carryFlag == True:
+            newDigit = (b[i] + carryFlag)%10
+            carryFlag = (b[i] + carryFlag)-newDigit
+        result.append(newDigit)
+    if carryFlag == 1:
         result.append(1)
     return result
 
