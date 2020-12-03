@@ -111,7 +111,23 @@ def addList(a, b): # adds two positive numlists
     return result
 
 def subList(a, b): # substracts a small positive list number from a big one
-    pass
+    result=[]
+    for i in range(len(b)):
+        if a[i]<b[i]:
+            a[i]+=10
+            a[i+1]-=1
+        result.append(a[i]-b[i])
+    for i in range(len(b),len(a)-1):
+        if a[i]<0:
+            a[i]+=10
+            a[i+1]-=1
+        result.append(a[i])
+    while len(result)>1:
+        if result[-1]==0:
+            result.pop()
+        else:
+            break
+    return result
 
 def mulList(a,b): #multiplies two numlists
     result=[]
@@ -157,6 +173,6 @@ def compare(a, b): #returns True if a is bigger , False if b is bigger
             elif a[-1 * i] > b[-1 * i]:
                 return False
         return True 
-n=NumList("20")
-t=NumList("4560")
-print(n.mul(t))
+n=NumList("1000")
+t=NumList("-923")
+print(n.add(t))
