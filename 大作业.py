@@ -27,7 +27,7 @@ class NumList:
                 sum = subList(self.num, other.num)
             else:
                 self.sign = False
-                sum = subList(other.num - self.num)
+                sum = subList(other.num ,self.num)
         if sum==[0]:
             return [0]
         sum.append(self.sign)
@@ -173,6 +173,6 @@ def compare(a, b): #returns True if a is bigger , False if b is bigger
             elif a[-1 * i] > b[-1 * i]:
                 return False
         return True 
-n=NumList("1000")
-t=NumList("-923")
+n=NumList("999")
+t=NumList("-1000")
 print(n.add(t))
