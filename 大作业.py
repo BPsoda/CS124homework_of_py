@@ -116,17 +116,17 @@ def subList(a, b): # substracts a small positive list number from a big one
 def mulList(a,b): #multiplies two numlists
     result=[]
     carryFlag=0
-    dct=dict({})
     for i in range(len(b)):
         temp=[0]*i+[]
+        carryFlag=0
         for j in range(len(a)):
             newDigit=a[j]*b[i]+carryFlag
             carryFlag=newDigit//10
             newDigit=newDigit%10
             temp.append(newDigit)
-        dct[i]=temp
-    for k in range(len(b)):
-        result=addList(result,dct[k])
+        if carryFlag>0:
+            temp.append(carryFlag)
+        result=addList(result,temp)
     return result
 
 def str2list(stri): #turns a string number into a list
@@ -157,6 +157,6 @@ def compare(a, b): #returns True if a is bigger , False if b is bigger
             elif a[-1 * i] > b[-1 * i]:
                 return False
         return True 
-n=NumList("2")
+n=NumList("20")
 t=NumList("4560")
 print(n.mul(t))
