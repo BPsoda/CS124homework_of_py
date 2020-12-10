@@ -6,75 +6,80 @@ class NumList:
             self.sign=True
         self.num = str2list(target)
     
-    def printNum(self):
-        print(list2str(self.num,self.sign))
+    def __str__(self):
+        return list2str(self.num,self.sign)
     
-    def add(self, other):
+    def __add__(self, other):
+        sm = NumList("0")
         if self.sign and other.sign:
-            sum = addList(self.num, other.num)
+            sm.num = addList(self.num, other.num)
+            sm.sign = True
         elif self.sign == False and other.sign == False:
-            sum = addList(self.num, other.num)
+            sm.num = addList(self.num, other.num)
+            sm.sign = False
         elif self.sign == False and other.sign == True:
             if compare(self.num, other.num):
                 self.sign = False
-                sum = subList(self.num, other.num)
+                sm.num = subList(self.num, other.num)
             else:
                 self.sign = True
-                sum = subList(other.num, self.num)
+                sm.num = subList(other.num, self.num)
         elif self.sign == True and other.sign == False:
             if compare(self.num, other.num):
                 self.sign = True
-                sum = subList(self.num, other.num)
+                sm.num = subList(self.num, other.num)
             else:
                 self.sign = False
-                sum = subList(other.num ,self.num)
-        if sum==[0]:
-            return [0]
-        sum.append(self.sign)
-        return sum
+                sm.num = subList(other.num ,self.num)
+        if sm.num == [0]:
+            sm.sign = True
+        return sm
                     
-    def sub(self, other):
+    def __sub__(self, other):
+        mina = NumList("0")
         if self.sign and other.sign:
             if compare(self.num, other.num):
-                self.sign = True
-                mina = subList(self.num, other.num)
+                mina.sign = True
+                mina.num = subList(self.num, other.num)
             else:
-                self.sign = False
-                mina = subList(other.num, self.num)
+                mina.sign = False
+                mina.num = subList(other.num, self.num)
         elif self.sign == False and other.sign == False:
             if compare(self.num, other.num):
-                self.sign = False
-                mina = subList(self.num, other.num)
+                mina.sign = False
+                mina.num = subList(self.num, other.num)
             else:
-                self.sign = True
-                mina = subList(other.num, self.num)
+                mina.sign = True
+                mina.num = subList(other.num, self.num)
         elif self.sign == False and other.sign == True:
-            mina = addList(self.num, other.num)
+            mina.sign = False
+            mina.num = addList(self.num, other.num)
         elif self.sign == True and other.sign == False:
-            mina = addList(self.num, other.num)
-        if mina ==[0]:
-            return [0]
-        mina.append(self.sign)
+            mina.sign = True
+            mina.num = addList(self.num, other.num)
+        if mina.num ==[0]:
+            mina.sign = True
         return mina
 
-    def mul(self, other):
+    def __mul__(self, other):
+        prod = NumList("0")
         if self.sign and other.sign:
-            prod= mulList(self.num, other.num)
+            prod.sign = True
+            prod.num = mulList(self.num, other.num)
         elif self.sign == False and other.sign == False:
-            prod = mulList(self.num, other.num)
-            self.sign=True
+            prod.num = mulList(self.num, other.num)
+            prod.sign = True
         else:
-            prod=mulList(self.num,other.num)
-            self.sign=False
-        if prod[-1] ==0:
-            return [0]
-        prod.append(self.sign)
+            prod.num = mulList(self.num,other.num)
+            prod.sign = False
+        if prod.num == [0]:
+            prod.sign = True
         return prod
 
-    def div(self, other):
+    def __div__(self, other):
         pass
 
-    def pow(self, power):
+    def __pow__(self, power):
         pass
 
 def addList(a, b): # adds two positive numlists
@@ -130,19 +135,21 @@ def subList(a, b): # substracts a small positive list number from a big one
     return result
 
 def mulList(a,b): #multiplies two numlists
-    result=[]
-    carryFlag=0
+    result = []
+    carryFlag = 0
     for i in range(len(b)):
-        temp=[0]*i+[]
-        carryFlag=0
+        temp = [0] * i + []
+        carryFlag = 0
         for j in range(len(a)):
-            newDigit=a[j]*b[i]+carryFlag
-            carryFlag=newDigit//10
-            newDigit=newDigit%10
+            newDigit = a[j] * b[i] + carryFlag
+            carryFlag = newDigit // 10
+            newDigit = newDigit % 10
             temp.append(newDigit)
-        if carryFlag>0:
+        if carryFlag > 0:
             temp.append(carryFlag)
-        result=addList(result,temp)
+        result = addList(result, temp)
+    if result[-1] == 0:
+        return [0]
     return result
 
 def str2list(stri): #turns a string number into a list
@@ -161,18 +168,15 @@ def list2str(lst,sign): #turns a list number into a string
     else:
         return "".join(str(i) for i in lst[-1: :-1])
 
-def compare(a, b): #returns True if a is bigger , False if b is bigger 
+def compare(a, b): #returns True if a >= b
     if len(a) > len(b):
         return True
     elif len(a) < len(b):
         return False
     else:
         for i in range(len(a)):
-            if a[-1 * i] < b[-1 * i]:
+            if a[-1 * i] > b[-1 * i]:
                 return True
-            elif a[-1 * i] > b[-1 * i]:
+            elif a[-1 * i] < b[-1 * i]:
                 return False
         return True 
-n=NumList("999")
-t=NumList("-1000")
-print(n.add(t))
