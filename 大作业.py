@@ -1,3 +1,5 @@
+from copy import deepcopy
+
 class NumList:
     def __init__(self, target):
         if target[0]=="-":
@@ -7,7 +9,7 @@ class NumList:
         self.num = str2list(target)
     
     def __str__(self):
-        return list2str(self.num,self.sign)
+        return list2str(self.num, self.sign)
     
     def __add__(self, other):
         sm = NumList("0")
@@ -76,8 +78,20 @@ class NumList:
             prod.sign = True
         return prod
 
-    def __div__(self, other):
-        pass
+    def __truediv__(self, other):
+        quo = NumList("0")
+        if self.sign and other.sign:
+            quo.sign = True
+            quo.num = divList(self.num, other.num)
+        elif self.sign == False and other.sign == False:
+            quo.num = divList(self.num, other.num)
+            quo.sign = True
+        else:
+            quo.num = divList(self.num,other.num)
+            quo.sign = False
+        if quo.num == [0]:
+            quo.sign = True
+        return quo
 
     def __pow__(self, power):
         pass
@@ -115,14 +129,15 @@ def addList(a, b): # adds two positive numlists
         result.append(1)
     return result
 
-def subList(a, b): # substracts a small positive list number from a big one
+def subList(t, b): # substracts a small positive list number from a big one
     result=[]
+    a = deepcopy(t)
     for i in range(len(b)):
-        if a[i]<b[i]:
-            a[i]+=10
-            a[i+1]-=1
-        result.append(a[i]-b[i])
-    for i in range(len(b),len(a)-1):
+        if a[i] < b[i]:
+            a[i] += 10
+            a[i + 1] -= 1
+        result.append(a[i] - b[i])
+    for i in range(len(b), len(a) - 1):
         if a[i]<0:
             a[i]+=10
             a[i+1]-=1
@@ -134,7 +149,7 @@ def subList(a, b): # substracts a small positive list number from a big one
             break
     return result
 
-def mulList(a,b): #multiplies two numlists
+def mulList(a, b): #multiplies two numlists
     result = []
     carryFlag = 0
     for i in range(len(b)):
@@ -152,6 +167,25 @@ def mulList(a,b): #multiplies two numlists
         return [0]
     return result
 
+def divList(a, b):
+    result = []
+    lenb = len(b)
+    remainder = a[-lenb + 1:]
+    if compare(a, b) == False:
+        return [0]
+    for i in range(len(a) - lenb + 1):
+        newDigit = 0
+        currNum = b
+        dividedNum = [a[-lenb - i]] + remainder 
+        while compare(currNum, dividedNum) == False:
+            currNum = addList(currNum, b)
+            newDigit = newDigit + 1
+        remainder = subList(b, subList(currNum, dividedNum))
+        result = [newDigit] + result
+    if result[-1] == 0:
+        result.pop(-1)
+    return result
+
 def str2list(stri): #turns a string number into a list
     lst=[]
     if stri[0] == "-":
@@ -162,7 +196,7 @@ def str2list(stri): #turns a string number into a list
             lst.append(int(i))
     return lst
 
-def list2str(lst,sign): #turns a list number into a string
+def list2str(lst, sign): #turns a list number into a string
     if sign== False:
         return "-" + "".join(str(i) for i in lst[-1: :-1])
     else:
@@ -175,8 +209,12 @@ def compare(a, b): #returns True if a >= b
         return False
     else:
         for i in range(len(a)):
-            if a[-1 * i] > b[-1 * i]:
+            if a[-i - 1] > b[-i - 1]:
                 return True
-            elif a[-1 * i] < b[-1 * i]:
+            elif a[-i - 1] < b[-i - 1]:
                 return False
         return True 
+
+a = NumList("323452754")
+b = NumList("945678")
+print(a / b)
