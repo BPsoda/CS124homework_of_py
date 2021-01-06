@@ -3,7 +3,7 @@
 组员：  刘忱锴 520030910010  山澍 520030910011  黄浩栩520030910014  
 本次作业实现的主要功能是无限长度的整数运算  
 **longinteger**为主模组，**examples**包含了所有测试用例  
-
+该项目已在github上开源[戳这里](https://github.com/BPsoda/CS124homework_of_py/tree/sumission)
 ***
 ## 使用指南
 ### 主要变量名
