@@ -1,5 +1,5 @@
 # 计算导论大作业：无限制整数
-
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=default"></script>
 组员：  刘忱锴 520030910010  山澍 520030910011  黄浩栩520030910014  
 本次作业实现的主要功能是无限长度的整数运算  
 **longinteger**为主模组，**examples**包含了所有测试用例  
@@ -9,7 +9,7 @@
 ### 主要变量名
 - **target**  *str* 输入的数
 - **self.sign** *bool* 符号
-- **self.num** *list* 倒叙存储数的每位数字
+- **self.num** *list* 倒序存储数的每位数字
 - **other** *class* 用于运算的其他数
 - **sm** *class* 加法的结果
 - **mina** *class* 减法的结果
